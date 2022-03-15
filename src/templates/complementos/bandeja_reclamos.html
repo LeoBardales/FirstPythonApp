@@ -1,0 +1,28 @@
+
+{% for lista in listas %}
+<div class="accordion accordion-flush" id="accordionFlushExample{{lista.idreclamos}}">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseOne{{lista.idreclamos}}" aria-expanded="false" aria-controls="flush-collapseOne">
+          <b>{{lista.Nombre}}</b>
+        </button>
+      </h2>
+      <div id="flush-collapseOne{{lista.idreclamos}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+        data-bs-parent="#accordionFlushExample{{lista.idreclamos}}">
+        <div class="accordion-body">
+            
+            <b>Problema:</b> {{lista.Descripcion}} <br>
+            <b>Numero de Cuenta:</b> {{lista.NCuenta}} <br>
+            <b>Fecha:</b> {{lista.Fecha}} <br>
+            <p>
+            <a href="/marcar_visto/{{lista.idreclamos}}" type="button" class="btn btn-success">Marcar como visto</a>
+              
+
+            </p>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}

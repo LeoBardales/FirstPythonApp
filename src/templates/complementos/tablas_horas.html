@@ -1,0 +1,57 @@
+<h4 align="center">Listado de Actividades</h4>
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Actividad</td>
+            <td>Encargado</td>
+            <td>Fecha</td>
+            <td>Hora Inicial</td>
+            <td>Hora Final</td>
+            <td>Horas Otorgadas</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in programming %}
+            <tr>
+                <td>{{lista.Actividad}}</td>
+                <td>{{lista.Encargado}}</td>
+                <td>{{lista.Fecha}}</td>
+                <td>{{lista.Hora_I}}</td>
+                <td>{{lista.Hora_F}}</td>
+                <td>{{lista.Horas}}</td>
+                <td> 
+                
+                {% if lista.Evidencia == '' %}
+                <a class="btn btn-danger ">No hay Evidencia</a>
+                {%else%}
+                <a data-bs-toggle="modal" data-bs-target="#ejemplo{{lista.RegistroId}}" class="btn btn-info ">Evidencia</a>
+                {% set url= '/Registros/%s' % (lista.Evidencia) %}
+                <!-- Modal -->
+                <div id="ejemplo{{lista.RegistroId}}" class="modal">
+                    <div class="modal-dialog modal-fullscreen">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Prueba de la Actividad</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <iframe src="{{url_for('static', filename = url)}}" id="iframe" frameborder="0"
+                                    style="width:100%; height:100%;"></iframe>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+        
+    </table>

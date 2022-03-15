@@ -1,0 +1,12 @@
+{% if Comprobar.0 == 2 %}
+<a href="/Registrarme/{{Comprobar.2}}/{{Comprobar.1}}" class="btn btn-success">Inscribirme</a>
+{% else %}
+    {% if Comprobar.0 == 1%}
+        <spam class="btn btn-danger">Ya no hay cupos para esta actividad</spam>
+        {% else %}
+        <spam class="btn btn-warning">Tu ya estas inscrito</spam>
+    {% endif %}
+{% endif %}
+
+
+

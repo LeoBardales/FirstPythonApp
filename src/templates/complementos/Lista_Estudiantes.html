@@ -1,0 +1,39 @@
+<h3 align="center">Listado de Estudiantes</h3>
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Numero de Cuenta</td>
+            <td>Nombre</td>
+            <td>Beca</td>
+            <td>Carrera</td>
+            <td>Telefono</td>
+            <td>Correo</td>
+            <td>Activo</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in listas %}
+            <tr>
+                <td>{{lista.NCuenta}}</td>
+                <td>{{lista.Nombre}}</td>
+                <td>{{lista.Beca}}</td>
+                <td>{{lista.Carrera}}</td>
+                <td>{{lista.Telefono}}</td>
+                <td>{{lista.Correo}}</td>
+                <td>
+                    {% if lista.Activo == 'SI' %}
+                        <span class="badge bg-success">{{lista.Activo}}</span> 
+                        {% else %}
+                        <span class="badge bg-danger">{{lista.Activo}}</span> 
+                        
+                    {% endif %}
+                    
+                </td>
+                <td> 
+                <a href="/estudiantes_edit/{{lista.EstudiantesId}}" class="btn btn-info">Ver</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

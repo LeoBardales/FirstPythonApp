@@ -1,0 +1,29 @@
+<h4 align="center">Tus Reclamos</h4>
+
+<table class="table">
+    <thead class="table-dark">
+        <td>Descripcion</td>
+        <td>Fecha</td>
+        <td>Visto</td>
+    </thead>
+    <tbody>
+        
+      {% for lista in listas %}
+        <tr>
+            <td>{{lista.Descripcion}}</td>
+            <td>{{lista.Fecha}}</td>
+            <td> 
+              {% if lista.Visto == 'SI' %}
+              <span class="badge bg-success">{{lista.Visto}}</span> 
+              {% else %}
+              <span class="badge bg-danger">{{lista.Visto}}</span> 
+              
+          {% endif %}
+            </td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+    
+    
+</table>

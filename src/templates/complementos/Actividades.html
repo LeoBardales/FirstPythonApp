@@ -1,0 +1,42 @@
+<h3 align="center">Listado de Actividades</h3>
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Actividad</td>
+            <td>Encargado</td>
+            <td>Fecha</td>
+            <td>Hora Inicial</td>
+            <td>Hora Final</td>
+            <td>Horas Otorgadas</td>
+            <td>Cupos</td>
+            <td>Inscritos</td>
+            <td>Acesso</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in listas %}
+            <tr>
+                <td>{{lista.Actividad}}</td>
+                <td>{{lista.Encargado}}</td>
+                <td>{{lista.Fecha}}</td>
+                <td>{{lista.Hora_I}}</td>
+                <td>{{lista.Hora_F}}</td>
+                <td align="center">{{lista.Horas}}</td>
+                <td align="center">{{lista.Cupos}}</td>
+                <td align="center">{{lista.Inscritos}}</td>
+                <td align="center">
+                    {% if lista.Acceso == 'SI' %}
+                        <span class="badge bg-success">{{lista.Acceso}}</span> 
+                        {% else %}
+                        <span class="badge bg-danger">{{lista.Acceso}}</span> 
+                    {% endif %}
+                </td>
+                <td> 
+                <a href="/actividad_edit/{{lista.idActividades}}" class="btn btn-info">Ver</a>
+                <a href="/Eliminar_Registro/{{lista.idActividades}}" onclick="return ConfirDelete()" class="btn btn-danger btn-delete" >Eliminar</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

@@ -1,0 +1,31 @@
+<h4 align="center">Listado de Actividades</h4>
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Actividad</td>
+            <td>Encargado</td>
+            <td>Fecha</td>
+            <td>Hora Inicial</td>
+            <td>Hora Final</td>
+            <td>Horas Otorgadas</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in programming %}
+            <tr>
+                <td>{{lista.Actividad}}</td>
+                <td>{{lista.Encargado}}</td>
+                <td>{{lista.Fecha}}</td>
+                <td>{{lista.Hora_I}}</td>
+                <td>{{lista.Hora_F}}</td>
+                <td>{{lista.Horas}}</td>
+                <td> 
+                <a href="/Estudiante_Actividadedit/{{lista.idActividades}}/{{lista.EstudiantesId}}" class="btn btn-info">Ver</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+        
+    </table>

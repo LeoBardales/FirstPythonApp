@@ -1,0 +1,31 @@
+<h3 align="center">Listado de Administradores</h3>
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Nombre</td>
+            <td>Correo</td>
+            <td>Activo</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in listas %}
+            <tr>
+                <td>{{lista.Nombre}}</td>
+                <td>{{lista.Email}}</td>
+                <td>
+                    {% if lista.Activo == 'SI' %}
+                        <span class="badge bg-success">{{lista.Activo}}</span> 
+                        {% else %}
+                        <span class="badge bg-danger">{{lista.Activo}}</span> 
+                        
+                    {% endif %}
+                    
+                </td>
+                <td> 
+                <a href="/admin_edit/{{lista.UserId}}" class="btn btn-info">Ver</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

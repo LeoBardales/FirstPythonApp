@@ -1,0 +1,35 @@
+{% for lista in listas %}
+
+<a href="/Estudiante_Inscripcion/{{lista.idActividades}}" class="cita-link">
+    <div class="departamentos">
+        {% if lista.Acceso == 'SI' %}
+            <img src="{{url_for('static', filename ='/img/detalle2.png')}}" alt="" >
+        {% else %}
+        <img src="{{url_for('static', filename ='/img/password.png')}}" alt="" >
+        {% endif %}
+        <div>
+        <p>
+           <h3 style="color:#0e0d0d">{{lista.Actividad}}</h3> 
+        </p>
+        <p>
+            <h6 style="color:#0e0d0d">Encargado: {{lista.Encargado}} </h6>
+        </p>
+        <p>
+            <h6 style="color:#0e0d0d">Fecha:{{lista.Fecha}} </h6> 
+        </p>
+        <p>
+            <h6 style="color:#0e0d0d">Horas Otorgadas:{{lista.Horas}}</h6>
+        </p>
+        <p>
+            {% if lista.Acceso == 'SI' %}
+            <span class="badge bg-success">Disponible</span> 
+            {% else %}
+            <span class="badge bg-danger">No Disponible</span>    
+        {% endif %}
+        </p>
+        </div>
+
+    </div> 
+</a>
+{% endfor %}
+

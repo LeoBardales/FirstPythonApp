@@ -1,0 +1,46 @@
+<h4 align="center">Informes</h4>
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Descripcion</td>
+            <td>Fecha</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in listas %}
+            <tr>
+                <td>{{lista.Descripcion}}</td>
+                <td>{{lista.Fecha}}</td>
+                <td> 
+                {% if lista.Reporte == '' %}
+                {%else%}
+                <a data-bs-toggle="modal" data-bs-target="#ejemplo{{lista.idinformes}}" class="btn btn-info ">Ver Informe</a>
+                {% set url= '/Reportes/%s' % (lista.Reporte) %}
+                <!-- Modal -->
+                <div id="ejemplo{{lista.idinformes}}" class="modal">
+                    <div class="modal-dialog modal-fullscreen">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{lista.Descripcion}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <iframe src="{{url_for('static', filename = url)}}" id="iframe" frameborder="0"
+                                    style="width:100%; height:100%;"></iframe> 
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+        
+    </table>
