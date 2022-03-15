@@ -1907,6 +1907,6 @@ def hacer_reclamo():
 
 # Make sure this we are executing this file
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
+    app.run(debug=True)
     csrf.init_app(app)
     app.run()
