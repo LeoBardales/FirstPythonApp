@@ -852,16 +852,12 @@ def add_cuenta():
                 
                 for p in data :
                     IdEstudiante=p['EstudiantesId']
-
-                success_message="Actividad Actualizado con Exito"
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 query = "select COUNT(EstudiantesId) as count from registro where idActividades='{}' and EstudiantesId='{}'".format(Codigo,IdEstudiante)
                 cur.execute(query)
                 programming = cur.fetchall()
                 for p in programming:
                     exis=p['count']
-                
-
                 if exis==0 :
                     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                     query = "SELECT (Cupos-Inscritos) as Cupos from actividades WHERE idActividades='{}'".format(Codigo)
@@ -869,8 +865,6 @@ def add_cuenta():
                     programming = cur.fetchall()
                     for p in programming:
                         cupos=p['Cupos']
-
-                    
                     if cupos>0:
                         cur = mysql.connection.cursor()
                         cur.execute("INSERT INTO registro (idActividades, EstudiantesId) VALUES (%s,%s)", (Codigo,IdEstudiante))
@@ -1725,17 +1719,25 @@ def Registrarme(codigo,id):
             flash('Te has inscrito en esta actividad')   
             return Estudiante_Inscripcion(codigo)
         else:
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO registro (idActividades, EstudiantesId,Evidencia) VALUES (%s,%s,'')", (codigo,id))
-            mysql.connection.commit()
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            query = "SELECT (Cupos-Inscritos) as Cupos from actividades WHERE idActividades='{}'".format(codigo)
+            cur.execute(query)
+            programming = cur.fetchall()
+            for p in programming:
+                cupos=p['Cupos']
 
-            cur1 = mysql.connection.cursor()
-            cur1.execute("UPDATE actividades SET Inscritos = Inscritos + 1  WHERE idActividades=%s", (codigo,))
-            mysql.connection.commit()
-
-            flash('Te has inscrito en esta actividad')
-            
-            return Estudiante_Inscripcion(codigo)
+            if int(cupos)>0:
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO registro (idActividades, EstudiantesId,Evidencia) VALUES (%s,%s,'')", (codigo,id))
+                mysql.connection.commit()
+                cur1 = mysql.connection.cursor()
+                cur1.execute("UPDATE actividades SET Inscritos = Inscritos + 1  WHERE idActividades=%s", (codigo,))
+                mysql.connection.commit()
+                flash('Te has inscrito en esta actividad')
+                return Estudiante_Inscripcion(codigo)
+            else:
+                flash('No hay cupos para esta actividad')
+                return Estudiante_Inscripcion(codigo)
 
 
 
