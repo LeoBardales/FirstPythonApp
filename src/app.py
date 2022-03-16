@@ -1717,17 +1717,25 @@ def Comprobar():
 @app.route("/Registrarme/<codigo>/<id>",methods=["POST","GET"])
 @login_required
 def Registrarme(codigo,id):
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO registro (idActividades, EstudiantesId,Evidencia) VALUES (%s,%s,'')", (codigo,id))
-        mysql.connection.commit()
+        cursor = mysql.connection.cursor()
+        sql = "SELECT *from registro where idActividades={} and EstudiantesId={} ".format(codigo,id)
+        cursor.execute(sql)
+        row = cursor.fetchone()
+        if row != None:
+            flash('Te has inscrito en esta actividad')   
+            return Estudiante_Inscripcion(codigo)
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO registro (idActividades, EstudiantesId,Evidencia) VALUES (%s,%s,'')", (codigo,id))
+            mysql.connection.commit()
 
-        cur1 = mysql.connection.cursor()
-        cur1.execute("UPDATE actividades SET Inscritos = Inscritos + 1  WHERE idActividades=%s", (codigo,))
-        mysql.connection.commit()
+            cur1 = mysql.connection.cursor()
+            cur1.execute("UPDATE actividades SET Inscritos = Inscritos + 1  WHERE idActividades=%s", (codigo,))
+            mysql.connection.commit()
 
-        flash('Te has inscrito en esta actividad')
-        
-        return Estudiante_Inscripcion(codigo)
+            flash('Te has inscrito en esta actividad')
+            
+            return Estudiante_Inscripcion(codigo)
 
 
 
