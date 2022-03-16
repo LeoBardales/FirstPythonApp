@@ -28,6 +28,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   <style>
     html {
       margin: 0;
@@ -52,19 +53,19 @@
 <body style="background-color: #eee">
   <div class="d-flex flex-column justify-content-center align-items-center"
     style="min-height: 100vh; max-height: 100vh">
-    
+
   <div class="bg-white rounded col-12 col-md-8 col-lg-6 col-xl-5 px-5 py-4">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
       {% if message == 'Usuario creado con exito' or message == 'Se envio su nueva contraseña a su correo electronico'%}
       <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{message}}!</strong> 
+        <strong>{{message}}!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       {% else %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>{{message}}!</strong> 
+          <strong>{{message}}!</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       {% endif %}
@@ -85,7 +86,13 @@
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
-        <input id="form-password" type="password" placeholder="Ingrese su Contraseña"  class="form-control" name="password" value="" required/>
+        <div class="d-flex input-group-append">
+            <input id="password" type="password" placeholder="Ingrese su Contraseña"  class="form-control" name="password" value="" required/>
+                <span class="input-group-text" onclick="password_show_hide();">
+                  <i class="bi bi-eye-fill" id="show_eye"></i>
+                  <i class="bi bi-eye-slash-fill d-none" id="hide_eye"></i>
+                </span>
+              </div>
         <div class="d-flex justify-content-end mt-2">
           <a class="small text-muted" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">Olvidaste la contraseña?</a>
         </div>
