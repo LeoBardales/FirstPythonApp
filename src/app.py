@@ -1196,68 +1196,6 @@ def contra_admin():
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
             <title>ASEBEP</title>
-            <style type="text/css">
-                a {
-                    color: #aabb47;
-                }
-
-                body,
-                #header h1,
-                #header h2,
-                p {
-                    margin: 0;
-                    padding: 0;
-                }
-
-                #main {
-                    border: 1px solid #cfcece;
-                }
-
-                img {
-                    display: block;
-                }
-
-                #top-message p {
-                    color: #3f4042;
-                    font-size: 12px;
-                    font-family: Arial, Helvetica, sans-serif;
-                }
-
-                #header h1 {
-                    color: #ffffff !important;
-                    font-family: "Lucida Grande", sans-serif;
-                    font-size: 24px;
-                    margin-bottom: 0 !important;
-                    padding-bottom: 0;
-                }
-
-                #header p,
-                #bottom p {
-                    color: #ffffff !important;
-                    font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif;
-                    font-size: 12px;
-                }
-
-                
-                
-
-                h5 {
-                    margin: 0 0 0.8em 0;
-                }
-
-                h5 {
-                    font-size: 18px;
-                    color: #444444 !important;
-                    font-family: Arial, Helvetica, sans-serif;
-                }
-
-                p {
-                    font-size: 12px;
-                    color: #444444 !important;
-                    font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif;
-                    line-height: 1.5;
-                }
-            </style>
         </head>
 
         <body>
@@ -1302,8 +1240,8 @@ def contra_admin():
                                     <table id="content-4" cellpadding="0" cellspacing="0" align="center">
                                         <tr>
                                             <td width="200" valign="top">
-                                                <h5 align="center">ASEBEP UNAH-VS</h5>
-                                                <p align="center">Plataforma ASEBEP UNAH-VS</p>
+                                                <h3 align="center"><b>ASEBEP UNAH-VS</b></h3>
+                                                <br><b>Ustes cambio su contraseña en la plataforma ASEBEP</b> </br>
                                             </td>
                                             
                                         </tr>
@@ -1315,7 +1253,7 @@ def contra_admin():
                         </table>
                         <table id="bottom" cellpadding="20" cellspacing="0" width="600" align="center">
                             <tr>
-                                <td bgcolor="#1b129b" align="center">
+                                <td bgcolor="#40CFFF" align="center">
                                     <p id="bajo">Diseñado para una mejor experiencia de nuestros Usuarios</p>
                                     <p ><a href="https://www.facebook.com/Asebep-Unah-Vs-101545674954541">Facebook ASEBEP</a> | <a href="https://www.instagram.com/asebepvs/">Instagram ASEBEP</a> </p>
                                 </td>
