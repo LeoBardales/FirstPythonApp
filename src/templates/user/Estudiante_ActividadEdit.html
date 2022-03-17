@@ -175,8 +175,8 @@
                         <div class="form-group row">
                             <div class="form-group col-6">
                                 <label class="form-control-label" for="Horas">Evidencia</label>
-                                <input type="file" name="archivo" required>
-                                <button type="submit" id="Eliminar" class="btn btn-primary btn-block">
+                                <textarea class="form-control"  name="archivo" rows="3" required></textarea>
+                                <button type="submit" id="subir" class="btn btn-primary btn-block">
                                     Subir
                                 </button>
                             </div>
@@ -184,28 +184,9 @@
                        </form>
                     
                     {% else %}
-                    {% set url= '/Registros/%s' % (Actividad.Evidencia) %}
                     <label class="form-control-label" for="Horas">Evidencia</label>
-                    <a data-bs-toggle="modal" data-bs-target="#ejemplo{{Actividad.RegistroId}}" class="btn btn-info">Ver</a>
+                    <a href="{{Actividad.Evidencia}}" target="_blank" rel="noopener noreferrer"  class="btn btn-info">Ver</a>
                     <a href="/Eliminar_Evidencia/{{Actividad.RegistroId}}/{{Actividad.idActividades}}" class="btn btn-danger">Eliminar</a>
-                    <div id="ejemplo{{Actividad.RegistroId}}" class="modal">
-                        <div class="modal-dialog modal-fullscreen">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Prueba de la Actividad</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <iframe src="{{url_for('static', filename = url)}}" id="iframe" frameborder="0"
-                                        style="width:100%; height:100%;"></iframe>
-                                </div>
-                                <div class="modal-footer">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     {% endif %}
 
         {% endfor %}

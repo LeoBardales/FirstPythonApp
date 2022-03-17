@@ -31,7 +31,18 @@ $(function () {
     return false;
   });
 
-  $("#FiltrarMes").click(function () {
+  $("form").on("submit", function (event) {
+    var mes = $("#mes").val();
+    var ano = $("#ano").val();
+
+    if (mes == "0" || ano == "0") {
+    } else {
+      LlenarTabla()
+    }
+    return false;
+  });
+
+  function LlenarTabla(){
     $.ajax({
       type: "POST",
       url: "/Tabla_Horas",
@@ -60,6 +71,8 @@ $(function () {
       },
     });
 
-    return false;
-  });
+  }
+
+
+
 });

@@ -10,9 +10,9 @@ $(function () {
     });
 
     $("form").on("submit", function (event) {
-        var mes = $("#mes").val();
-    
-        if (mes == "0") {
+        var ano = $("#ano").val();
+
+    if (mes == "0" || ano == "0") {
         } else {
             cargarTotalHoras()
             cargarMisActividades()

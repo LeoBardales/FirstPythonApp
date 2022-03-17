@@ -1,7 +1,7 @@
 import os
 import string
 import random
-from flask import Flask, render_template, request, redirect, url_for, flash,make_response,jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash,jsonify
 from flask_mysqldb import MySQL,MySQLdb
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -22,10 +22,10 @@ from models.entities.User import User
 app = Flask(__name__)
 csrf = CSRFProtect()
 # Mysql Connection
-app.config['MYSQL_HOST'] = 'b1gkbkaxuuhoagwjnu98-mysql.services.clever-cloud.com'
-app.config['MYSQL_USER'] = 'uipfypaoi1uupzxd'
-app.config['MYSQL_PASSWORD'] = 'vQUA0UGB2oY4hzrAXCMI'
-app.config['MYSQL_DB'] = 'b1gkbkaxuuhoagwjnu98'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'asebep'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 login_manager_app = LoginManager(app)
@@ -1054,8 +1054,8 @@ def Tabla_Horas():
     if request.method == 'POST':
         Codigo = request.form['EstudiantesId']
         mes = request.form['mes']
-        
-        if mes == '0':
+        ano=request.form['ano']
+        if(mes=='0' and ano=='0'):
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             query = "SELECT * FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE()) ORDER by Fecha,Hora_I ASC".format(Codigo)
             cur.execute(query)
@@ -1063,7 +1063,7 @@ def Tabla_Horas():
             return jsonify({'data': render_template('complementos/tablas_horas.html', programming=programming)})
         else:
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            query = "SELECT * FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo,mes)
+            query = "SELECT * FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
             cur.execute(query)
             programming = cur.fetchall()
             return jsonify({'data': render_template('complementos/tablas_horas.html', programming=programming)})  
@@ -1466,7 +1466,8 @@ def Mis_Actividades():
         if request.method == 'POST':
             Codigo = current_user.eid
             mes = request.form['mes']   
-            if mes == '0':
+            ano=request.form['ano']
+            if(mes=='0' and ano=='0'):
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 query = """SELECT * FROM view_registroestudiantes WHERE EstudiantesId='{}' 
                 and MONTH(Fecha)=MONTH(CURRENT_DATE()) 
@@ -1479,7 +1480,7 @@ def Mis_Actividades():
                 query = """SELECT * FROM view_registroestudiantes 
                 WHERE EstudiantesId='{}' 
                 and MONTH(Fecha)='{}' 
-                and Year(Fecha)=Year(CURRENT_DATE()) ORDER by Fecha,Hora_I ASC""".format(Codigo,mes)
+                and Year(Fecha)='{}' ORDER by Fecha,Hora_I ASC""".format(Codigo,mes,ano)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('comp_user/Mis_Actividades.html', programming=programming)}) 
@@ -1493,8 +1494,8 @@ def Horas():
     if current_user.usertype == 2:
             Codigo = current_user.eid
             mes = request.form['mes']
-        
-            if mes == '0':
+            ano=request.form['ano']
+            if(mes=='0' and ano=='0'):
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo)
                 cur.execute(query)
@@ -1503,15 +1504,15 @@ def Horas():
 
             else:
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo,mes)
+                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
     else:
             Codigo = request.form['EstudiantesId']
             mes = request.form['mes']
-        
-            if mes == '0':
+            ano=request.form['ano']
+            if(mes=='0' and ano=='0'):
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo)
                 cur.execute(query)
@@ -1520,7 +1521,7 @@ def Horas():
 
             else:
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo,mes)
+                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
@@ -1595,19 +1596,9 @@ def Eliminar_MiActiva():
 @app.route("/upload/<idr>/<aid>", methods=['POST'])
 @login_required
 def uploader(idr,aid):
-    app.config['UPLOAD_FOLDER'] = './src/static/Registros'
-
     if request.method == 'POST':
         # obtenemos el archivo del input "archivo"
-        f = request.files['archivo']
-        filename = secure_filename(f.filename)
-        
-        extension = f.mimetype.split('/')
-        filename = "%s.%s" % (idr,extension[1])
-        print('Este es el nombre del archivo',filename)
-        # Guardamos el archivo en el directorio "Archivos PDF"
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # Retornamos una respuesta satisfactoria
+        filename = request.form['archivo']
         cur = mysql.connection.cursor()
         cur.execute( "UPDATE registro set Evidencia=%s WHERE RegistroId= %s", (filename,idr))
         mysql.connection.commit()
@@ -1820,31 +1811,13 @@ def uploadInforme():
 
     if request.method == 'POST':
         # obtenemos el archivo del input "archivo"
-        f = request.files['archivo']
+        filename = request.form['archivo']
         ano = request.form['ano']
         mes = request.form['mes']
-        filename = secure_filename(f.filename)
         ide=current_user.eid
-        cur = mysql.connection.cursor()
-        cur.execute( "INSERT INTO `informes`(EstudiantesId,Fecha,ano,Descripcion,Reporte) VALUES (%s,CURRENT_DATE(),%s,'','')", (ide,ano))
-        mysql.connection.commit()
-
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = "SELECT max(idinformes) as id FROM informes where EstudiantesId={}".format(ide,)
-        cur.execute(query)
-        programming = cur.fetchall()
-        for lista in programming:
-            idr=lista['id'] 
         desc=printMonth(int(mes),ano)
-
-        extension = f.mimetype.split('/')
-        filename = "%s.%s" % (idr,extension[1])
-        print('Esta es la descripcion',desc)
-        # Guardamos el archivo en el directorio "Archivos PDF"
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # Retornamos una respuesta satisfactoria
         cur = mysql.connection.cursor()
-        cur.execute( "Update informes SET Descripcion=%s, Reporte = %s WHERE idinformes = %s", (desc,filename,idr,))
+        cur.execute( "INSERT INTO `informes`(EstudiantesId,Fecha,ano,Descripcion,Reporte) VALUES (%s,CURRENT_DATE(),%s,%s,%s)", (ide,ano,desc,filename))
         mysql.connection.commit()
         flash('Informe Subido con exito......')
         return redirect(url_for('Mis_Informes'))
