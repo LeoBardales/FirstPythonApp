@@ -1,4 +1,3 @@
-import os
 import string
 import random
 from flask import Flask, render_template, request, redirect, url_for, flash,jsonify
@@ -11,7 +10,6 @@ server = smtplib.SMTP('smtp.gmail.com:587')
 
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from werkzeug.utils import secure_filename
 
 # Models:
 from models.ModelUser import ModelUser
@@ -220,6 +218,9 @@ def Registro_Usuario():
         Correo = request.form['Correo']
         BecaId = request.form['Beca']
         CarreraId = request.form['Carrera']
+        ano = request.form['ano']
+        periodo = request.form['Periodo']
+        obs="Inicio el beneficio el "+periodo+" del año "+ano
         #Contra = request.form['password2']
         Contra=""
 
@@ -259,7 +260,7 @@ def Registro_Usuario():
                 for p in data :
                     UserId=p['Max']
                 cur = mysql.connection.cursor()
-                cur.execute("UPDATE estudiantes SET BecaId=%s,CarreraId=%s,UserId=%s,Telefono=%s, Registrado='SI' WHERE NCuenta = %s",(BecaId,CarreraId,UserId,Telefono,Cuenta))
+                cur.execute("UPDATE estudiantes SET BecaId=%s,CarreraId=%s,UserId=%s,Telefono=%s, Registrado='SI', Observaciones=%s WHERE NCuenta = %s",(BecaId,CarreraId,UserId,Telefono,obs,Cuenta))
                 mysql.connection.commit()
                 success_message = 'Usuario creado con exito'
 
@@ -594,7 +595,7 @@ def Eliminar_Reg(id):
         success_message="Actividad Eliminada con Exito"
         flash(success_message)
 
-        return home()
+        return redirect(url_for('home'))
     
 
 
@@ -675,7 +676,7 @@ def registro():
             success_message="Actividad Creada"
             flash(success_message)
     
-            return get_actividad(codigo)
+            return redirect(url_for("get_actividad",id=codigo))
     else:
         return logout()
 
@@ -733,7 +734,7 @@ def Eliminar_Registro():
             success_message="Actividad Eliminada con Exito"
             flash(success_message)
 
-            return home()
+            return redirect(url_for('home'))
     else:
         return logout()
 
@@ -810,7 +811,7 @@ def Eliminar_Cuenta(id,idr):
         mysql.connection.commit()
         flash('La cuenta fue eliminada de los participantes')
 
-        return get_actividad(id)
+        return redirect(url_for("get_actividad",id=id))
 
 
 
@@ -1022,16 +1023,18 @@ def Actualizar_Estudiante():
             Seguimiento = request.form['Seguimiento']
             EstudiantesId = request.form['EstudiantesId']
             UserId = request.form['UserId']
+            Observaciones = request.form['Observaciones']
 
             cur = mysql.connection.cursor()
             cur.execute("UPDATE users SET Nombre=%s,Email=%s,Activo=%s WHERE UserId=%s", (Nombre,Correo,Activo,UserId))
             mysql.connection.commit()
             
             cur1 = mysql.connection.cursor()
-            cur1.execute("UPDATE estudiantes SET NCuenta=%s,BecaId=%s,CarreraId=%s,Seguimiento=%s,Telefono=%s WHERE EstudiantesId=%s",(Cuenta,BecaId,CarreraId,Seguimiento,Telefono,EstudiantesId))
+            cur1.execute("UPDATE estudiantes SET NCuenta=%s,BecaId=%s,CarreraId=%s,Seguimiento=%s,Telefono=%s,Observaciones=%s WHERE EstudiantesId=%s",(Cuenta,BecaId,CarreraId,Seguimiento,Telefono,Observaciones,EstudiantesId))
             mysql.connection.commit()
             flash('Datos Actualizados con exito')
-            return edit_estudiante(EstudiantesId)
+            #return edit_estudiante(EstudiantesId)
+            return redirect(url_for("edit_estudiante",id=EstudiantesId))
     else:
         return logout()
 
@@ -1101,10 +1104,11 @@ def agregar():
                 return agregar_cuenta()
             else:
                 cur = mysql.connection.cursor()
-                cur.execute("INSERT INTO estudiantes(NCuenta,Registrado,BecaId,CarreraId,UserId,Seguimiento,Telefono) VALUES (%s,'NO',0,0,0,'','')", (Cuenta,))
+                cur.execute("INSERT INTO estudiantes(NCuenta,Registrado,BecaId,CarreraId,UserId,Seguimiento,Telefono,Observaciones) VALUES (%s,'NO',0,0,0,'','','')", (Cuenta,))
                 mysql.connection.commit()
                 flash("Registrada con exito")
-                return agregar_cuenta()
+                #return agregar_cuenta()
+                return redirect(url_for("agregar_cuenta"))
     else:
         return logout()
 
@@ -1116,7 +1120,7 @@ def eliminar(id):
         cur.execute( "DELETE from estudiantes WHERE EstudiantesId= %s", (id,))
         mysql.connection.commit()
         flash("Registro Eliminado con exito")
-        return agregar_cuenta()
+        return redirect(url_for("agregar_cuenta"))
     return logout()
 
 #ver Datos Admin------------------------------------------------------------------------------------
@@ -1159,7 +1163,8 @@ def actualizar_admin():
         
         flash(mens)
 
-        return datos_admin()
+        
+        return redirect(url_for("datos_admin"))
     else:
         if current_user.usertype == 3:
             Correo=request.form['Correo']
@@ -1182,7 +1187,8 @@ def actualizar_admin():
                 mysql.connection.commit()
                 mens="Datos actulizados con exito"
             flash(mens)    
-            return admin_edit(user)
+            #return admin_edit(user) ,id=user
+            return redirect(url_for("admin_edit",id=user))
         else:
             return logout()
 #cambiar contra admin--------------------------------------------------------------------------------------------------
@@ -1300,7 +1306,8 @@ def contra_admin():
             s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8').strip())
         else:
             flash('La contraseña actual es incorrecta')
-        return datos_admin()
+        #return datos_admin()
+        return redirect(url_for("datos_admin"))
     else:
         if current_user.usertype == 2:
             contra=request.form['NC']
@@ -1335,7 +1342,8 @@ def contra_admin():
                 s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8').strip())
             else:
                 flash('La contraseña actual es incorrecta')
-            return Mis_Datos()
+            #return Mis_Datos()
+            return redirect(url_for("Mis_Datos"))
         else:
             return logout()
 
@@ -1507,7 +1515,8 @@ def Eliminar_Evidencia(idr,ida):
         cur.execute( "UPDATE registro set Evidencia='' WHERE RegistroId= %s", (idr,))
         mysql.connection.commit()
         flash('Evidencia Eliminada......')
-        return get_actividadestudiante(ida,ide)
+        #return get_actividadestudiante(ida,ide)
+        return redirect(url_for("get_actividadestudiante",id=ida,ide=ide))
     else:
         return logout()
     
@@ -1528,7 +1537,8 @@ def Eliminar_MiActiva():
         mysql.connection.commit()
         flash('La Actividad ha sido eliminada con exito')
 
-        return homeEstudiante()
+        #return homeEstudiante()
+        return redirect(url_for("homeEstudiante"))
 
 #subir evidencia de actividad---------------------------------------------------------------------------------------------------
 @app.route("/upload/<idr>/<aid>", methods=['POST'])
@@ -1541,7 +1551,7 @@ def uploader(idr,aid):
         cur.execute( "UPDATE registro set Evidencia=%s WHERE RegistroId= %s", (filename,idr))
         mysql.connection.commit()
         flash('Evidencia Subida con exito......')
-        return get_actividadestudiante(aid,current_user.eid)
+        return redirect(url_for("get_actividadestudiante",id=aid,ide=current_user.eid))
 
 #---------------------------------------------------------------Actividades Disponibles-------------------------------------------------#
 #Actividad Disponibles
@@ -1646,7 +1656,8 @@ def Registrarme(codigo,id):
         row = cursor.fetchone()
         if row != None:
             flash('Te has inscrito en esta actividad')   
-            return Estudiante_Inscripcion(codigo)
+            
+            return redirect(url_for("Estudiante_Inscripcion",id=codigo))
         else:
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             query = "SELECT (Cupos-Inscritos) as Cupos from actividades WHERE idActividades='{}'".format(codigo)
@@ -1663,10 +1674,10 @@ def Registrarme(codigo,id):
                 cur1.execute("UPDATE actividades SET Inscritos = Inscritos + 1  WHERE idActividades=%s", (codigo,))
                 mysql.connection.commit()
                 flash('Te has inscrito en esta actividad')
-                return Estudiante_Inscripcion(codigo)
+                return redirect(url_for("Estudiante_Inscripcion",id=codigo))
             else:
                 flash('No hay cupos para esta actividad')
-                return Estudiante_Inscripcion(codigo)
+                return redirect(url_for("Estudiante_Inscripcion",id=codigo))
 
 
 
@@ -1726,7 +1737,7 @@ def Actualizar_MisDatos():
                 mens="Datos actulizados con exito"
 
         flash(mens)
-        return Mis_Datos()
+        return redirect(url_for("Mis_Datos"))
 
 #ver y subir informes-----------------------------------------------------------------------------------------------------------
 @app.route('/Mis_Informes')

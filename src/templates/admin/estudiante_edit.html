@@ -138,7 +138,22 @@
                         <textarea class="form-control"  name="Seguimiento" rows="3" >{{lista.Seguimiento}}</textarea>
                     </div>
                 </div>
-                
+                <div class="form-group row">
+                  <div class="form-group col-6">
+                    <label class="form-control-label" for="cuenta">Observaciones</label>
+                    <textarea class="form-control"  name="Observaciones" rows="3" >{{lista.Observaciones}}</textarea>
+                </div>
+                <div class="form-group col-4">
+                  <div class="container p-4">
+                      <div class="row">
+                          <button class="btn btn-secondary btn-block" id="Actualizar" >
+                              Actualizar
+                          </button>
+                      </div>
+                  </div>
+                  <!--    <small class="form-text text-muted">Se enviará una confirmacion a este correo</small> -->
+              </div>
+                </div>
                 <div class="form-group row">
                     <div class="form-group col-6">
                         <input class="form-control" value="{{lista.UserId}}" type="hidden" id="UserId" name="UserId" id="UserId" readonly>
@@ -149,16 +164,7 @@
 
 
                 <div class="form-group row">
-                    <div class="form-group col-4">
-                        <div class="container p-4">
-                            <div class="row">
-                                <button class="btn btn-secondary btn-block" id="Actualizar" >
-                                    Actualizar
-                                </button>
-                            </div>
-                        </div>
-                        <!--    <small class="form-text text-muted">Se enviará una confirmacion a este correo</small> -->
-                    </div>
+                    
                     
                 </div>
                 <div class="form-group row">
