@@ -660,10 +660,11 @@ def registro():
             Acceso = request.form['Acceso']
             Cupos = request.form['Cupos']
             Descripcion = request.form['Descripcion']
+            Link = request.form['link']
 
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO actividades (Actividad, Encargado, Hora_I, Hora_F,Fecha, Horas,Acceso,Cupos,Descripcion,Inscritos) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,0)", (Actividad1, Encargado, HoraI,HoraF,Fecha,Horas,Acceso,Cupos,Descripcion))
+            cur.execute("INSERT INTO actividades (Actividad, Encargado, Hora_I, Hora_F,Fecha, Horas,Acceso,Cupos,Descripcion,Inscritos,Link) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,0,%s)", (Actividad1, Encargado, HoraI,HoraF,Fecha,Horas,Acceso,Cupos,Descripcion,Link))
             mysql.connection.commit()
             cur1 = mysql.connection.cursor()
             cur1.execute('SELECT max(idActividades) as Max FROM actividades')
@@ -754,6 +755,7 @@ def actulizar_Registro():
             Cupos = request.form['Cupos']
             Acceso = request.form['Acceso']
             Descripcion = request.form['Descripcion']
+            Link = request.form['link']
             comp=1
 
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -787,7 +789,7 @@ def actulizar_Registro():
 
 
             cur = mysql.connection.cursor()
-            cur.execute("UPDATE actividades SET Cupos=%s, Acceso=%s , Descripcion=%s,Actividad=%s,Encargado=%s,Fecha=%s,Hora_I=%s,Hora_F=%s,Horas=%s WHERE idActividades=%s", (Cupos,Acceso,Descripcion,Actividad1, Encargado,Fecha, HoraI,HoraF,Horas,Codigo))
+            cur.execute("UPDATE actividades SET Cupos=%s, Acceso=%s , Descripcion=%s,Actividad=%s,Encargado=%s,Fecha=%s,Hora_I=%s,Hora_F=%s,Horas=%s,Link=%s WHERE idActividades=%s", (Cupos,Acceso,Descripcion,Actividad1, Encargado,Fecha, HoraI,HoraF,Horas,Link,Codigo))
             mysql.connection.commit()
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             query = "SELECT * FROM view_registro WHERE idActividades='{}'".format(Codigo)

@@ -148,14 +148,22 @@
                     </div>
                     <div class="form-group row">
                         <div class="form-group col-6">
+                            <label class="form-control-label" for="cuenta">Descripcion</label>
+                            <textarea class="form-control" name="Descripcion"
+                                rows="3">{{Actividad.Descripcion}}</textarea>
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="form-control-label" for="cuenta">Enlace de la Actividad</label>
+                            <textarea class="form-control" name="link"
+                                rows="3">{{Actividad.Link}}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-group col-6">
                             <label class="form-control-label" for="Horas">Estudiantes Inscritos</label>
                             <input name="Inscritos" value="{{Actividad.Inscritos}}" type="number" readonly>
                         </div>
-                        <div class="form-group col-6">
-                            <label class="form-control-label" for="cuenta">Descripcion</label>
-                            <textarea class="form-control" value="{{Actividad.Descripcion}}" name="Descripcion"
-                                rows="3">{{Actividad.Descripcion}}</textarea>
-                        </div>
+
                     </div>
                     <div class="form-group row">
                         <div class="form-group col-4">
