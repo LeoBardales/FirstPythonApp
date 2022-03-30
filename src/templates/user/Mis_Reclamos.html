@@ -90,21 +90,17 @@
         <form id="form-cita" action="{{ url_for('hacer_reclamo') }}" enctype="multipart/form-data" method="POST">
             <fieldset class="form-group">
                 <div class="form-group row">
-                    <div class="form-group col-6">
                         <label class="form-control-label" for="cuenta">Escribe aqui tu reclamo</label>
                         <textarea class="form-control"  name="reclamo" rows="3" required></textarea>
-                    </div>
+                    
                 </div>
                 <div class="form-group row">
-                    <div class="form-group col-4">
-                        <div class="container p-4">
-                            <div class="row">
+                    <div class="form-group col-6">
+                        <div class="d-grid gap-2 mx-auto p-4">
                                 <button class="btn btn-primary btn-block" id="Actualizar" >
                                     Enviar
                                 </button>
-                            </div>
                         </div>
-                        <!--    <small class="form-text text-muted">Se enviará una confirmacion a este correo</small> -->
                     </div>
                     
                 </div>
