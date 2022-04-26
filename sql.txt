@@ -1,0 +1,284 @@
+CREATE TABLE `actividades` (
+  `idActividades` int(11) NOT NULL,
+  `Actividad` varchar(100) NOT NULL,
+  `Encargado` varchar(45) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora_I` time(2) NOT NULL,
+  `Hora_F` time(2) NOT NULL,
+  `Horas` int(11) NOT NULL,
+  `Cupos` int(11) NOT NULL,
+  `Inscritos` int(11) NOT NULL,
+  `Descripcion` varchar(1000) NOT NULL,
+  `Link` varchar(2000) NOT NULL,
+  `Acceso` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `actividades`
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `beca`
+--
+
+CREATE TABLE `beca` (
+  `BecaId` int(11) NOT NULL,
+  `Tipo` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `beca`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `carrera`
+--
+
+CREATE TABLE `carrera` (
+  `CarreraId` int(11) NOT NULL,
+  `Carrera` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `carrera`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estudiantes`
+--
+
+CREATE TABLE `estudiantes` (
+  `EstudiantesId` int(11) NOT NULL,
+  `NCuenta` varchar(45) NOT NULL,
+  `BecaId` int(11) NOT NULL,
+  `CarreraId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `Seguimiento` varchar(400) NOT NULL,
+  `Telefono` varchar(45) NOT NULL,
+  `Registrado` varchar(2) NOT NULL,
+  `Observaciones` varcahar(500)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `estudiantes`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `informes`
+--
+
+CREATE TABLE `informes` (
+  `idinformes` int(11) NOT NULL,
+  `EstudiantesId` int(11) NOT NULL,
+  `Descripcion` varchar(100) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Reporte` varchar(400) NOT NULL,
+  `ano` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `informes`
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reclamos`
+--
+
+CREATE TABLE `reclamos` (
+  `idreclamos` int(11) NOT NULL,
+  `EstudiantesId` int(11) NOT NULL,
+  `Descripcion` varchar(400) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Visto` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `reclamos`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registro`
+--
+
+CREATE TABLE `registro` (
+  `RegistroId` int(11) NOT NULL,
+  `idActividades` int(11) NOT NULL,
+  `EstudiantesId` int(11) NOT NULL,
+  `Evidencia` varchar(400) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `registro`
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `UserId` int(11) NOT NULL,
+  `Nombre` varchar(45) NOT NULL,
+  `Email` varchar(45) NOT NULL,
+  `Password` varchar(200) NOT NULL,
+  `IdUserType` int(11) NOT NULL,
+  `Activo` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`UserId`, `Nombre`, `Email`, `Password`, `IdUserType`, `Activo`) VALUES
+(1, 'ASEBEP UNAH-VS', 'asabepunahvs@gmail.com', 'pbkdf2:sha256:260000$ZStOdBfdPXUsdRlf$1b867ea187e2b7676efbfdd90a17209c6b83c9e216be36eeeb8bd3b9be08a4c7', 3, 'SI');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usertype`
+--
+
+CREATE TABLE `usertype` (
+  `idUserType` int(11) NOT NULL,
+  `Tipo` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usertype`
+--
+
+INSERT INTO `usertype` (`idUserType`, `Tipo`) VALUES
+(1, 'Administrador'),
+(2, 'Estudiante'),
+(3, 'Root');
+
+ALTER TABLE `actividades`
+  ADD PRIMARY KEY (`idActividades`);
+
+ALTER TABLE `beca`
+  ADD PRIMARY KEY (`BecaId`);
+
+--
+-- Indices de la tabla `carrera`
+--
+ALTER TABLE `carrera`
+  ADD PRIMARY KEY (`CarreraId`);
+
+--
+-- Indices de la tabla `estudiantes`
+--
+ALTER TABLE `estudiantes`
+  ADD PRIMARY KEY (`EstudiantesId`);
+
+--
+-- Indices de la tabla `informes`
+--
+ALTER TABLE `informes`
+  ADD PRIMARY KEY (`idinformes`);
+
+--
+-- Indices de la tabla `reclamos`
+--
+ALTER TABLE `reclamos`
+  ADD PRIMARY KEY (`idreclamos`);
+
+--
+-- Indices de la tabla `registro`
+--
+ALTER TABLE `registro`
+  ADD PRIMARY KEY (`RegistroId`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`UserId`);
+
+--
+-- Indices de la tabla `usertype`
+--
+ALTER TABLE `usertype`
+  ADD PRIMARY KEY (`idUserType`);
+
+
+CREATE VIEW `view_registro`  AS  select `a`.`idActividades` AS `idActividades`,`r`.`RegistroId` AS `RegistroId`,`e`.`NCuenta` AS `NCuenta`,`u`.`Nombre` AS `Nombre`,`r`.`Evidencia` AS `Evidencia` from (((`registro` `r` join `actividades` `a` on(`r`.`idActividades` = `a`.`idActividades`)) join `estudiantes` `e` on(`r`.`EstudiantesId` = `e`.`EstudiantesId`)) join `users` `u` on(`e`.`UserId` = `u`.`UserId`)) ;
+
+CREATE  VIEW `view_reclamos`  AS  select `r`.`idreclamos` AS `idreclamos`,`e`.`NCuenta` AS `NCuenta`,`u`.`Nombre` AS `Nombre`,`r`.`Descripcion` AS `Descripcion`,`r`.`Fecha` AS `Fecha` from ((`reclamos` `r` join `estudiantes` `e` on(`r`.`EstudiantesId` = `e`.`EstudiantesId`)) join `users` `u` on(`u`.`UserId` = `e`.`UserId`)) where `r`.`Visto` = 'NO' ;
+
+CREATE VIEW `view_estudiantes`  AS  select `e`.`EstudiantesId` AS `EstudiantesId`,`e`.`UserId` AS `UserId`,`e`.`NCuenta` AS `NCuenta`,(select `u`.`Nombre` from `users` `u` where `u`.`UserId` = `e`.`UserId`) AS `Nombre`,`e`.`BecaId` AS `BecaId`,(select `b`.`Tipo` from `beca` `b` where `b`.`BecaId` = `e`.`BecaId`) AS `Beca`,`e`.`CarreraId` AS `CarreraId`,(select `c`.`Carrera` from `carrera` `c` where `c`.`CarreraId` = `e`.`CarreraId`) AS `Carrera`,`e`.`Telefono` AS `Telefono`,(select `u`.`Email` from `users` `u` where `u`.`UserId` = `e`.`UserId`) AS `Correo`,(select sum(`a`.`Horas`) from ((`actividades` `a` join `registro` `r` on(`r`.`idActividades` = `a`.`idActividades`)) join `estudiantes` `es` on(`r`.`EstudiantesId` = `es`.`EstudiantesId`)) where `es`.`EstudiantesId` = `e`.`EstudiantesId` and month(`a`.`Fecha`) = month(curdate())) AS `Horas_Mes`,(select sum(`a`.`Horas`) from ((`actividades` `a` join `registro` `r` on(`r`.`idActividades` = `a`.`idActividades`)) join `estudiantes` `es` on(`r`.`EstudiantesId` = `es`.`EstudiantesId`)) where `es`.`EstudiantesId` = `e`.`EstudiantesId` and year(`a`.`Fecha`) = year(curdate())) AS `Horas_Ano`,`e`.`Seguimiento` AS `Seguimiento`,`e`.`Observaciones` AS `Observaciones`,(select `u`.`Activo` from `users` `u` where `u`.`UserId` = `e`.`UserId`) AS `Activo` from `estudiantes` `e` where `e`.`Registrado` = 'SI' ;
+
+
+
+
+
+
+CREATE VIEW `view_registroestudiantes`  AS  select `e`.`EstudiantesId` AS `EstudiantesId`,`a`.`idActividades` AS `idActividades`,`a`.`Actividad` AS `Actividad`,`r`.`RegistroId` AS `RegistroId`,`a`.`Encargado` AS `Encargado`,`a`.`Fecha` AS `Fecha`,`a`.`Hora_I` AS `Hora_I`,`a`.`Hora_F` AS `Hora_F`,`a`.`Horas` AS `Horas`,`a`.`Cupos` AS `Cupos`,`a`.`Descripcion` AS `Descripcion`,`a`.`Link` AS `Link`,`r`.`Evidencia` AS `Evidencia` from ((`actividades` `a` join `registro` `r` on(`r`.`idActividades` = `a`.`idActividades`)) join `estudiantes` `e` on(`r`.`EstudiantesId` = `e`.`EstudiantesId`)) ;
+
+
+-- AUTO_INCREMENT de la tabla `actividades`
+--
+ALTER TABLE `actividades`
+  MODIFY `idActividades` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `beca`
+--
+ALTER TABLE `beca`
+  MODIFY `BecaId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `carrera`
+--
+ALTER TABLE `carrera`
+  MODIFY `CarreraId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `estudiantes`
+--
+ALTER TABLE `estudiantes`
+  MODIFY `EstudiantesId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `informes`
+--
+ALTER TABLE `informes`
+  MODIFY `idinformes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `reclamos`
+--
+ALTER TABLE `reclamos`
+  MODIFY `idreclamos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `registro`
+--
+ALTER TABLE `registro`
+  MODIFY `RegistroId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `usertype`
+--
+ALTER TABLE `usertype`
+  MODIFY `idUserType` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
