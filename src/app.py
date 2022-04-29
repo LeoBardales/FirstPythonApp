@@ -1293,7 +1293,7 @@ def contra_admin():
             cur = mysql.connection.cursor()
             cur.execute( "UPDATE users set password=%s WHERE UserId= %s", (Npassword,user))
             mysql.connection.commit()
-            flash('Contraseña actulizada con exito')
+            flash('Contraseña actualizada con exito')
             msg = email.message.Message()
             msg['Subject'] = 'Cambio de Contraseña'
             msg['From'] = 'asabepunahvs@gmail.com'
@@ -1328,7 +1328,7 @@ def contra_admin():
                 cur = mysql.connection.cursor()
                 cur.execute( "UPDATE users set password=%s WHERE UserId= %s", (Npassword,user))
                 mysql.connection.commit()
-                flash('Contraseña actulizada con exito')
+                flash('Contraseña actualizada con exito')
   
                 msg = email.message.Message()
                 msg['Subject'] = 'Cambio de Contraseña'
