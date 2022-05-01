@@ -567,6 +567,22 @@ def FiltrarActividades():
                 programming = cur.fetchall()
     
             return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+
+
+#filtrar tabla actividades por año-------------------------------------
+@app.route("/FiltroActividadesAno",methods=["POST","GET"])
+def FiltrarActividadesAno():
+        if request.method == 'POST':  
+            ano=request.form['ano1']
+            
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            query = "SELECT * FROM actividades WHERE YEAR(Fecha)='{}' ORDER by Fecha,Hora_I ASC".format(ano)
+            cur.execute(query)
+            programming = cur.fetchall()
+    
+            return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+
+
     
 #filtrar tabla actividades por Dia---------------------------------------------
 @app.route("/FiltroActividadesDia",methods=["POST","GET"])

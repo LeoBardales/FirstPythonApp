@@ -20,6 +20,8 @@ $(function () {
   });
   
 
+
+  //Filtrar por dia
   $("#Fecha").change(function () {
     var cuenta = $("#Codigo").val();
 
@@ -40,6 +42,30 @@ $(function () {
     return false;
   });
 
+  //Filtrar por ano
+  $("#ano1").change(function () {
+    var ano = $("#ano1").val();
+
+    if(ano == 0){
+
+    }else{
+      $.ajax({
+        type: "POST",
+        url: "/FiltroActividadesAno",
+        data: $("form").serialize(),
+        cache: false,
+        beforeSend: function (html) {
+          document.getElementById("insert_search").innerHTML = "";
+        },
+        success: function (html) {
+          $("#insert_search").show();
+          $("#insert_search").append(html.data);
+        },
+      });
+    }
+
+    return false;
+  });
 
 
 
@@ -97,6 +123,8 @@ $(function () {
     });
 
   }
+
+
 
 
 
