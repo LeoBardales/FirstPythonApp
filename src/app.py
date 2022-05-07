@@ -1025,6 +1025,20 @@ def tabla_informes():
             programming = cur.fetchall()
             return jsonify({'data': render_template('complementos/informes.html', listas=programming)})
 
+#llenar tabla de informes ---------------------------------------------------------------------------
+@app.route("/Eliminar_Informe/<idr>/<ide>",methods=["POST","GET"])
+@login_required
+def Eliminar_Informe(idr,ide):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM informes WHERE idinformes=%s", (idr,))
+    mysql.connection.commit()
+    flash('Informe eliminado con exito')
+    if current_user.usertype == 1:
+        return redirect(url_for("edit_estudiante",id=ide))
+    else:
+        return redirect(url_for('Mis_Informes'))
+
+
 #Actualizar Estudiante desde administrador----------------------------------------------------------------
 @app.route("/Actualizar_Estudiante",methods=["POST","GET"])
 @login_required
