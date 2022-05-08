@@ -962,7 +962,7 @@ def Busqueda_Estudiante():
 def edit_estudiante(id):
     if current_user.usertype == 1:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = "SELECT * FROM view_estudiantes where EstudiantesId={}".format(id)
+        query = "SELECT *,IFNULL(Horas_Mes,0) as Mes, IFNULL(Horas_Ano,0) as Ano FROM view_estudiantes where EstudiantesId={}".format(id)
         cur.execute(query)
         programming = cur.fetchall()
             
@@ -1465,6 +1465,23 @@ def Mis_Actividades():
     else:
         return logout() 
 
+#Filtrar actividades por ano estudiante-------------------------------------------------------------------------------------------
+@app.route("/FiltroAno",methods=["POST","GET"])
+@login_required
+def FiltroAno():
+    if current_user.usertype == 2:
+        if request.method == 'POST':
+            Codigo = current_user.eid  
+            ano=request.form['ano1']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            query = """SELECT * FROM view_registroestudiantes WHERE EstudiantesId='{}' 
+            and Year(Fecha)='{}' ORDER by Fecha,Hora_I ASC""".format(Codigo,ano)
+            cur.execute(query)
+            programming = cur.fetchall()
+            return jsonify({'data': render_template('comp_user/Mis_Actividades.html', programming=programming)})
+            
+    else:
+        return logout() 
 #llamar Hora registro estudiante---------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/Total_Horas",methods=["POST","GET"])
 @login_required
@@ -1475,14 +1492,14 @@ def Horas():
             ano=request.form['ano']
             if(mes=='0' and ano=='0'):
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo)
+                query = "SELECT IFNULL(sum(Horas),0) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
 
             else:
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
+                query = "SELECT IFNULL(sum(Horas),0) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
@@ -1492,18 +1509,31 @@ def Horas():
             ano=request.form['ano']
             if(mes=='0' and ano=='0'):
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo)
+                query = "SELECT IFNULL(sum(Horas),0) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)=MONTH(CURRENT_DATE()) and Year(Fecha)=Year(CURRENT_DATE())".format(Codigo)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
 
             else:
                 cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                query = "SELECT sum(Horas) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
+                query = "SELECT IFNULL(sum(Horas),0) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and MONTH(Fecha)='{}' and Year(Fecha)='{}'".format(Codigo,mes,ano)
                 cur.execute(query)
                 programming = cur.fetchall()
                 return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
-    
+
+#llamar Hora registro estudiante---------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/Total_Horas_Ano",methods=["POST","GET"])
+@login_required
+def Horas_Ano():
+    if current_user.usertype == 2:
+            Codigo = current_user.eid
+            ano=request.form['ano1']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            query = "SELECT IFNULL(sum(Horas),0) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and Year(Fecha)='{}'".format(Codigo,ano)
+            cur.execute(query)
+            programming = cur.fetchall()
+            return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
+  
     
 
 #Editar Actividad usuario estudiante-----------------------------------------------------------------------------------------------------
