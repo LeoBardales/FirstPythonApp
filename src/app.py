@@ -1479,9 +1479,19 @@ def FiltroAno():
             cur.execute(query)
             programming = cur.fetchall()
             return jsonify({'data': render_template('comp_user/Mis_Actividades.html', programming=programming)})
-            
     else:
-        return logout() 
+        if current_user.usertype == 1:
+            Codigo = request.form['EstudiantesId']  
+            ano=request.form['ano1']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            query = """SELECT * FROM view_registroestudiantes WHERE EstudiantesId='{}' 
+            and Year(Fecha)='{}' ORDER by Fecha,Hora_I ASC""".format(Codigo,ano)
+            cur.execute(query)
+            programming = cur.fetchall()
+            return jsonify({'data': render_template('comp_user/Mis_Actividades.html', programming=programming)})
+   
+        else:
+            return logout() 
 #llamar Hora registro estudiante---------------------------------------------------------------------------------------------------------------------------------------
 @app.route("/Total_Horas",methods=["POST","GET"])
 @login_required
@@ -1533,6 +1543,15 @@ def Horas_Ano():
             cur.execute(query)
             programming = cur.fetchall()
             return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
+    else:
+            Codigo = request.form['EstudiantesId']
+            ano=request.form['ano1']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            query = "SELECT IFNULL(sum(Horas),0) as Horas FROM view_registroestudiantes WHERE EstudiantesId='{}' and Year(Fecha)='{}'".format(Codigo,ano)
+            cur.execute(query)
+            programming = cur.fetchall()
+            return jsonify({'data': render_template('complementos/Horas.html', programming=programming)})
+
   
     
 
@@ -1750,7 +1769,7 @@ def Mis_Datos():
     if current_user.usertype == 2: 
         id = current_user.eid
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        query = "SELECT * FROM view_estudiantes where EstudiantesId={}".format(id)
+        query = "SELECT *,IFNULL(Horas_Mes,0) as Mes, IFNULL(Horas_Ano,0) as Ano FROM view_estudiantes where EstudiantesId={}".format(id)
         cur.execute(query)
         programming = cur.fetchall()
             
