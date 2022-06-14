@@ -1,0 +1,37 @@
+
+
+    <table class="table">
+        <thead class="table-dark">
+            <td>Actividad</td>
+            <td>Encargado</td>
+            <td>Fecha</td>
+            <td>Hora Inicial</td>
+            <td>Hora Final</td>
+            <td>Horas Otorgadas</td>
+            <td>Acesso</td>
+            <td>Accion</td>
+        </thead>
+        <tbody>
+            {% for lista in listas %}
+            <tr>
+                <td>{{lista.Actividad}}</td>
+                <td>{{lista.Encargado}}</td>
+                <td>{{lista.Fecha}}</td>
+                <td>{{lista.Hora_I}}</td>
+                <td>{{lista.Hora_F}}</td>
+                <td align="center">{{lista.Horas}}</td>
+                <td align="center">
+                    {% if lista.Acceso == 'SI' %}
+                        <span class="badge bg-success">{{lista.Acceso}}</span> 
+                        {% else %}
+                        <span class="badge bg-danger">{{lista.Acceso}}</span> 
+                    {% endif %}
+                </td>
+                <td> 
+                <a href="/Estudiante_Inscripcion/{{lista.idActividades}}" class="btn btn-info">Ver</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>

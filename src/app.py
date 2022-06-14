@@ -566,7 +566,10 @@ def FiltrarActividades():
                 cur.execute(query)
                 programming = cur.fetchall()
     
-            return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+            if current_user.usertype == 1:
+                return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+            else:
+                return jsonify({'data': render_template('comp_user/Actividades.html', listas=programming)})
 
 
 #filtrar tabla actividades por año-------------------------------------
@@ -580,7 +583,10 @@ def FiltrarActividadesAno():
             cur.execute(query)
             programming = cur.fetchall()
     
-            return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+            if current_user.usertype == 1:
+                return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+            else:
+                return jsonify({'data': render_template('comp_user/Actividades.html', listas=programming)})
 
 
     
@@ -589,13 +595,15 @@ def FiltrarActividadesAno():
 def FiltroActividadesDia():
         if request.method == 'POST':  
             Fecha=request.form['Fecha']  
-
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             query = "SELECT * FROM actividades WHERE Fecha='{}' ORDER by Fecha,Hora_I ASC".format(Fecha)
             cur.execute(query)
             programming = cur.fetchall()
-    
-            return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+            if current_user.usertype == 1:
+                return jsonify({'data': render_template('complementos/Actividades.html', listas=programming)})
+            else:
+                return jsonify({'data': render_template('comp_user/Actividades.html', listas=programming)})
+
     
 
 #Eliminar actividades desde Inicio---------------------------------------------
@@ -1635,7 +1643,7 @@ def uploader(idr,aid):
         return redirect(url_for("get_actividadestudiante",id=aid,ide=current_user.eid))
 
 #---------------------------------------------------------------Actividades Disponibles-------------------------------------------------#
-#Actividad Disponibles
+#Actividad Disponibles---------------------------------------------------------
 @app.route("/Actividades_Disponibles")
 @login_required
 def Actividades_Disponibles():
@@ -1643,6 +1651,16 @@ def Actividades_Disponibles():
         return render_template('user/Actividades_Estudiante.html')
     else:
         return logout()
+
+#Historial Actividades-------------------------------------------------------------------------------------------
+@app.route("/Actividades_Historial")
+@login_required
+def Actividades_Historial():
+    if current_user.usertype == 2:    
+        return render_template('user/historial.html')
+    else:
+        return logout()
+
 #llenar tabla actividades--------------------------------------------------------------------------------------------------------
 @app.route("/LlenarActividades",methods=["POST","GET"])
 @login_required
